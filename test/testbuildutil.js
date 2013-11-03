@@ -1,5 +1,5 @@
-var fs = require('fs'),
-    ncp = require('ncp');
+var fs = require('fs');
+//    ncp = require('ncp');
 
 module.exports = {
   copyFile : function (source, target, cb) {
@@ -28,7 +28,8 @@ module.exports = {
       }
     }
   },
-
+  
+  /*
   createDirIfNotExist : function (opts, fn) {
     var srcPath = opts.pathSrc
           .replace(/^~(?=\/)/, process.env.HOME)
@@ -44,6 +45,7 @@ module.exports = {
       ncp(srcPath, finPath, fn);
     });
   },
+   */
 
   createFileIfNotExist : function (opts, fn) {
     var srcPath = opts.pathSrc

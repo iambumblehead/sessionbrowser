@@ -18,10 +18,11 @@ startUtils.createFileIfNotExist({
       "sessiontest.js"
     ],
     publicPath : "/app",
-    basepage : "./test/test.html",
+    basepage : "./test/index.html",
     inputPath : [
       "./test/testSrc/",
-      "./node_modules"
+      "./node_modules",
+      "./sessionbrowser.js"
     ],
     outputPath : "./test/testFin/"
   }, function (err, res) {

@@ -14,12 +14,12 @@
     "update"
   ],
   "dependencies": {
-     "juicycookie" : ">=0.0.0",
+     "juicy-cookie" : ">=0.0.0",
      "rocktimer" : ">=0.0.0"
   },
   "devDependencies": {
     "scroungejs": ">=0.0.3",
-    "eventhook": ">=1.3.0"
+    "eventhook": ">=0.0.0"
   },
   "scripts": {
     "test": "node ./test/testbuild.js"
