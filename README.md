@@ -36,21 +36,21 @@ sessionbrowser may be downloaded directly or installed through `npm`.
 
 sessionbrowser uses cookie values matching this scheme:
  
-  `60000|3kj409234|1383553205422` (milliseconds|value|bgndate)
+  `60000|3kj409234|1383553205422` (milliseconds|value|_bgndate_)
   
 or this scheme:
 
   `60000|3kj409234` (milliseconds|value)
   
-It operates under the assumption that the number of milliseconds is the time after which the session should expire. If not `bgndate` is present, Date.now() is used and a timer is begun. 
+It operates under the assumption that the number of milliseconds is the time after which the session should expire. If _bgndate_ is not present, Date.now() is used. A sessionbrowsr timer ends at (bgndate + milliseconds). 
 
-With serialised milliseconds, sessionbrowser can resumes a prexisting session value on page load or begins a new session.
+With serialised milliseconds, sessionbrowser resumes a prexisting session value on page load or begins a new session.
 
 Assume there is a session object with named-property `token`. browsersession should expire with alongside token. Token's value is stored as a browser cookie named `sesstoken`.
 
  * **create a sessionbrowser object**
  
- The connect method directs a sessionbrowser object to initialize itself with a value from the 'sesstoken' cookie.
+ The connect method directs sessionbrowser to initialize itself with a value from cookie 'sesstoken'.
 
  > ```javascript
    sessionbrowserObj = sessionbrowser.getNew({
