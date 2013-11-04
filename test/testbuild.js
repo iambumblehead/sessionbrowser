@@ -17,7 +17,7 @@ startUtils.createFileIfNotExist({
     trees : [
       "sessiontest.js"
     ],
-    publicPath : "/",
+    publicPath : "./testFin",
     basepage : "./test/index.html",
     inputPath : [
       "./test/testSrc/",

@@ -31,6 +31,11 @@ sessionbrowser may be downloaded directly or installed through `npm`.
  $ cd sessionbrowser && npm install
  ```
 
+------------------------------------------------------------------------------
+#### <a id="usage"></a>USAGE:
+
+usage examples
+
 
 ------------------------------------------------------------------------------
 #### <a id="test"></a>TEST:
