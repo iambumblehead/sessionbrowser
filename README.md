@@ -52,31 +52,31 @@ Assume there is a session object with named-property `token`. browsersession sho
  
  The connect method directs sessionbrowser to initialize itself with a value from cookie 'sesstoken'.
 
- > ```javascript
-   sessionbrowserObj = sessionbrowser.getNew({
-       cookie : {
-           name : 'sesstoken' // 60000 milliseconds (1 minutes)
-       }
-   }).connect();
-   ```
+ ```javascript
+ sessionbrowserObj = sessionbrowser.getNew({
+     cookie : {
+         name : 'sesstoken' // 60000 milliseconds (1 minutes)
+     }
+ }).connect();
+ ```
 
  * **create a sessionbrowser session**   
 
- > ```javascript
-   sessionbrowserObj.set(sessObj.token);
-   ```
+ ```javascript
+ sessionbrowserObj.set(sessObj.token);
+ ```
    
  * **add an event handler to the sessionbrowser object**   
  
  The event handler function is called when the cookie expires.
 
 
- > ```javascript
-   sessionbrowserObj.onChangeHook.addFn(function (sess) {
-       var sessStatusElem = document.getElementById('SessionStatus');
-       sessStatusElem.innerHTML = JSON.stringify(sess);
-   }); 
-   ```
+ ```javascript
+ sessionbrowserObj.onChangeHook.addFn(function (sess) {
+     var sessStatusElem = document.getElementById('SessionStatus');
+     sessStatusElem.innerHTML = JSON.stringify(sess);
+ }); 
+ ```
 
 
 ------------------------------------------------------------------------------
@@ -94,33 +94,33 @@ Because cookies don't work with documents loaded through a file protocol (`file:
 
 I use lighttpd and /etc/hosts to make the document available through `sessionbrowser.com`.
 
-1. install lighttpd
+ 1. install lighttpd
 
- > ```bash
-   sudo apt-get install lighttpd
-   ```
+ ```bash
+ sudo apt-get install lighttpd
+ ```
 
 2. change lighttpd's configuration file
 
- > */etc/lighttpd/lighttpd.conf*
+ */etc/lighttpd/lighttpd.conf*
 
- > ```bash
-   server.document-root        = "/path/to/sessionbrowser/test" 
-   ```
+ ```bash
+ server.document-root        = "/path/to/sessionbrowser/test" 
+ ```
 
 3. restart lighttpd
 
- > ```bash
-   sudo /etc/init.d/lighttpd restart
-   ```
+ ```bash
+ sudo /etc/init.d/lighttpd restart
+ ```
    
 4. edit /etc/hosts
 
- > */etc/hosts*
+ */etc/hosts*
 
- > ```bash
-   127.0.0.1       sessionbrowser.com
-   ```
+ ```bash
+ 127.0.0.1       sessionbrowser.com
+ ```
 
 Then visit the sessionbrowser.com in your browser.
 
