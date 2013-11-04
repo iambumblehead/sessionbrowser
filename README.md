@@ -4,8 +4,6 @@ sessionbrowser
 
 ### OVERVIEW:
 
-**under development and usage is not recommend**
-
 Independently manage a session object with browser cookies and timeouts. 'Useful when session or user objects are shared between server and client enviornments. To manage cookies alongside the session or expire the session in a browser, use this script in your browser environment and bind it to your session or user objects.
 
 sessionbrowser uses [rocktimer][3] and [juicycookie][4] modules.
@@ -36,7 +34,49 @@ sessionbrowser may be downloaded directly or installed through `npm`.
 ------------------------------------------------------------------------------
 #### <a id="usage"></a>USAGE:
 
-usage examples
+sessionbrowser uses cookie values matching this scheme:
+ 
+  `60000|3kj409234|1383553205422` (milliseconds|value|bgndate)
+  
+or this scheme:
+
+  `60000|3kj409234` (milliseconds|value)
+  
+It operates under the assumption that the number of milliseconds is the time after which the session should expire. If not `bgndate` is present, Date.now() is used and a timer is begun. 
+
+With serialised milliseconds, sessionbrowser can resumes a prexisting session value on page load or begins a new session.
+
+Assume there is a session object with named-property `token`. browsersession should expire with alongside token. Token's value is stored as a browser cookie named `sesstoken`.
+
+ * **create a sessionbrowser object**
+ 
+ The connect method directs a sessionbrowser object to initialize itself with a value from the 'sesstoken' cookie.
+
+ > ```javascript
+   sessionbrowserObj = sessionbrowser.getNew({
+       cookie : {
+           name : 'sesstoken' // 60000 milliseconds (1 minutes)
+       }
+   }).connect();
+   ```
+
+ * **create a sessionbrowser session**   
+
+ > ```javascript
+   sessionbrowserObj.set(sessObj.token);
+   ```
+   
+ * **add an event handler to the sessionbrowser object**   
+ 
+ The event handler function is called when the cookie expires.
+
+
+ > ```javascript
+   sessionbrowserObj.onChangeHook.addFn(function (sess) {
+       var sessStatusElem = document.getElementById('SessionStatus');
+       sessStatusElem.innerHTML = JSON.stringify(sess);
+   }); 
+   ```
 
 
 ------------------------------------------------------------------------------
