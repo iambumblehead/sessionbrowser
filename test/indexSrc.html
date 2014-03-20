@@ -4,17 +4,82 @@
     <!-- <scrounge type=".js" trees="sessiontest.js"> -->
     <!-- </scrounge> -->
 
+    <!-- <scrounge type=".css" trees="sessiontest.js"> -->
+    <!-- </scrounge> -->
+
   </head>
   <body>
-    <h1>Test sessionbrowser.js</h1>
 
-    <code>
-      moldsession.onChangeHook.addFn(function (sess) {
 
-      });
-    </code>
+    <div class="session">
+      <div class="session-time-remaining">
+        <ul class="session-time-remaining-list">
+          <li class="session-time-remaining-list-item"> 
+            MM: <span class="session-time-remaining-list-item-mm" id="DisplayMM">0</span>
+          </li>
+          <li class="session-time-remaining-list-item"> 
+            SS: <span class="session-time-remaining-list-item-ss" id="DisplaySS">0</span>
+          </li>
+          <li class="session-time-remaining-list-item"> 
+            MS: <span class="session-time-remaining-list-item-ms" id="DisplayMS">0</span>
+          </li>
+        </ul>
+      </div>
 
-    <div id="SessionStatus"></div>
+
+
+      <div class="session-ctrl">
+        <h2 class="session-ctrl-title">Session:</h2>
+        <ul class="session-ctrl-list">
+          <li class="session-ctrl-list-item">
+            <a class="session-ctrl-list-item-link" id="KillLink" href="#">
+              <span class="session-ctrl-list-item-link-label">
+                Kill
+              </span>
+            </a>
+          </li>
+          <li class="session-ctrl-list-item">
+            <a class="session-ctrl-list-item-link" id="StartLink" href="#">
+              <span class="session-ctrl-list-item-link-label">
+                Start
+              </span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="session-status">
+        <span class="session-status-label" id="SessionStatus"></span>
+      </div>
+
+      <div class="session-ctrl">
+        <h2 class="session-ctrl-title">Model:</h2>
+        <ul class="session-ctrl-list">
+          <li class="session-ctrl-list-item">
+            <a class="session-ctrl-list-item-link" id="SetModelLink" href="#">
+              <span class="session-ctrl-list-item-link-label">
+                Set (Token)
+              </span>
+            </a>
+          </li>
+          <li class="session-ctrl-list-item">
+            <a class="session-ctrl-list-item-link" id="RmModelLink" href="#">
+              <span class="session-ctrl-list-item-link-label">
+                Rm (Token)
+              </span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="session-status">
+        <span class="session-status-label" id="ModelStatus"></span>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      session.init();
+    </script>
   </body>
 </html>
 

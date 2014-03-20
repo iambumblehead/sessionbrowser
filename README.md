@@ -42,40 +42,37 @@ or this scheme:
 
   `60000|3kj409234` (milliseconds|value)
   
-It operates under the assumption that the number of milliseconds is the time after which the session should expire. If _bgndate_ is not present, Date.now() is used. A sessionbrowsr timer ends at (bgndate + milliseconds). 
+It operates under the assumption that the number of milliseconds is the time after which the session should expire. If _bgndate_ is not present, Date.now() is used. sessionbrowser timer ends at (bgndate + milliseconds). 
 
 With serialised milliseconds, sessionbrowser resumes a prexisting session value on page load or begins a new session.
 
-Assume there is a session object with named-property `token`. browsersession should expire with alongside token. Token's value is stored as a browser cookie named `sesstoken`.
+Assume there is a session object with named-property `token`. browsersession should expire alongside token. Token's value is stored as a browser cookie named `sesstoken`.
 
  * **create a sessionbrowser object**
  
  The connect method directs sessionbrowser to initialize itself with a value from cookie 'sesstoken'.
 
  ```javascript
- sessionbrowserObj = sessionbrowser.getNew({
-     cookie : {
-         name : 'sesstoken' // 60000 milliseconds (1 minutes)
-     }
- }).connect();
- ```
-
- * **create a sessionbrowser session**   
-
- ```javascript
- sessionbrowserObj.set(sessObj.token);
- ```
-   
- * **add an event handler to the sessionbrowser object**   
+ // create a session
+ that.sessionbrowserObj = sessionbrowser(
+     'sessiontoken' // name of cookie
+ ).forEach({ ss : 1 }, function (ms) {
+     // forEach, onStart and onStop are events
+     // at which given callback functions are called
+     that.updateSSLabel(ms.remaining.asss());
+ }).forEach({ ms : 100 }, function (ms) {
+     that.updateMSLabel(ms.remaining.asms());
+ }).onStart(function (ms) {
+     that.updateSSLabel(ms.remaining.asss());
+     that.updateMSLabel(ms.remaining.asms());
+ }).onStop(function (ms) {
+     that.updateSSLabel(ms.remaining.asss());
+     that.updateMSLabel(ms.remaining.asms());
+     that.model.set({ token : '' });
+ }).connect(); 
  
- The event handler function is called when the cookie expires.
-
-
- ```javascript
- sessionbrowserObj.onChangeHook.addFn(function (sess) {
-     var sessStatusElem = document.getElementById('SessionStatus');
-     sessStatusElem.innerHTML = JSON.stringify(sess);
- }); 
+ // refresh the session on a token for 20 seconds
+ sessionbrowserObj.refresh('20000|mytoken')
  ```
 
 

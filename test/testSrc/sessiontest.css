@@ -1,0 +1,51 @@
+
+
+
+.session {}
+
+.session-time-remaining {
+    background-color:#afa;
+}
+.session-time-remaining-list {
+    list-style:none;
+    display:inline-block;
+}
+.session-time-remaining-list-item {
+    display:inline-block;
+    width:100px;
+    font-weight:bold;
+}
+
+.session-ctrl {
+    display:inline-block;
+    vertical-align:top;
+}
+.session-ctrl-title {
+    margin:0;padding:0;
+}
+.session-ctrl-list {
+    margin:0;
+    padding:0;
+    list-style:none;
+}
+.session-ctrl-list-item {
+    margin:5px 0;
+    background-color:#afa;
+}
+.session-ctrl-list-item-link,
+.session-ctrl-list-item-link:visited {
+    text-decoration:none;
+    color:#000;
+}
+.session-ctrl-list-item-link-label {
+    font-size:30px;
+    margin:20px;
+}
+
+.session-status {
+    display:inline-block;
+    vertical-align:top;
+    min-height:200px;
+    background-color:#faa;
+    width:400px;
+}

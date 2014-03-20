@@ -1,155 +1,182 @@
 // Filename: sessionbrowser.js
-// Timestamp: 2013.11.04-00:17:52 (last modified)  
+// Timestamp: 2014.03.19-18:25:57 (last modified)  
 // Author(s): Bumblehead (www.bumblehead.com)
-// Requires: juicycookie.js, rocktimer.js, eventhook.js
+// Requires:
+// juicycookie.js, 
+// eventhook.js, 
+// rocktimer.js,
+// cookiepack.js
 
+var cookiepack = require('./lib/cookiepack');
 var juicycookie = require('juicycookie');
 var rocktimer = require('rocktimer');
 var eventhook = require('eventhook');
 
-var sessionbrowser = ((typeof module === 'object') ? module : {}).exports = (function () {
-    // bind to user model
-    // on change user model set...
-
-  var cookiepack = (function () {
-    var proto = {
-      startval : '',
-      bgndate : 0,
-      val : '',
-      time : 0,
-      timer : null,
-      name : '', // cookiename
-
-      getmsRemaining : function () {
-        return this.getendDate() - Date.now();
-      },
-
-      getendDate : function () {
-        return this.bgndate + this.time;        
-      },
-
-      // unpack: '60000|3kj409234'
-      // to this: '60000|3kj409234|1383535833423'
-      unpack : function () {
-        var that = this,
-            val = this.startval,
-            valRe = /\d*|.*/,
-            packArr, packval;
-
-        if (typeof val === 'string' && val.match(valRe)) { 
-          packArr = val.split('|');
-          if (packArr[0] && !isNaN(+packArr[0])) {
-            that.time = +packArr[0];
-          }
-          if (packArr[1]) {
-            that.val = packArr[1];
-          }
-          if (packArr[2] && !isNaN(+packArr[2])) {
-            that.bgndate = +packArr[2];
-          } else {
-            that.bgndate = Date.now();
-          }
-        }
-
-        return that;
-      },
-
-      // pack: '60000|3kj409234'
-      // to this: '60000|3kj409234|1383535833423'
-      pack : function () {
-        var packed = '',
-            packedObj = this,
-            packedval = ':time|:val|:bgndate';
-
-        if (packedval) {
-          packed = packedval
-            .replace(/:time/, packedObj.time)
-            .replace(/:val/, packedObj.val)
-            .replace(/:bgndate/, packedObj.bgndate);
-        }
-
-        return packed;
-      },
-
-      activate : function (fn) {
-        var that = this;
-
-        juicycookie.persist(that.name, that.pack(), {
-          expires : { ms : that.getmsRemaining() }
-        });
-
-        that.timer = rocktimer.getNew({
-          ms : that.getmsRemaining()
-        }).start(function (timeTtl) {
-          fn(that);
-        });
-      }
-    };
-    
-    return { 
-      getNew : function (name, val) {
-        var that = Object.create(proto);
-        that.startval = val;
-        that.name = name;
-        that.time = 0;
-        that.timer = null;
-        that.unpack();
-        return that;
-      }
-    };
-  }());
+var sessionbrowser = ((typeof module === 'object') ? module : {}).exports = (function (p) {
 
   var proto = {
-    onChangeHook : function () {},
-    pack : null,
-    cookie : null,
+    timer : null,
 
-    // '3kj409234|60000'
-    set : function (valStr) {
-      var that = this,
-          pack,
-          cookie = that.cookie;
+    name : '',
+    content : '',
+    contentraw : '',
+    contenttok : '',
+    timestartTS : undefined,
+    timeremainingMS : 0,
 
-      if (cookie) {
-        pack = that.pack = cookiepack.getNew(that.name, valStr);
-        pack.activate(function (packer) {
-          that.onChangeHook.fire(packer);
-        });
-      }
+    onChangeHook : null,
+
+    getendDate : function () {
+      return this.timestartTS + this.timeremainingMS;        
+    },    
+
+    getmsRemaining : function () {
+      return this.getendDate() - Date.now();
     },
 
-    // sessionbrowserObj.pack.timer.getremainingms()
-    // connect on page load, re-establish session state
-    connect : function () {
-      var that = this, 
-          pack,
-          cookie = that.cookie,
-          cookieval = juicycookie.getValue(that.name);
+    getWithOpts : function (that, opts) {
+      opts = (typeof opts === 'object' && opts) || {};
+
+      that.name = opts.name;
+      that.content = opts.content || '';
+      that.contentraw = opts.contentraw;
+      that.contenttok = opts.contenttok;
+      that.timeremainingMS = opts.timeremainingMS || 0;
+      that.timestartTS = opts.timestartTS || undefined;
+
+      return that;
+    },
+
+    // persist session data to cookie
+    persist : function () {
+      var that = this;
+
+      if (!that.timestartTS) {
+        that.timestartTS = Date.now();
+      }
+
+      juicycookie.persist(that.cookiename, cookiepack.getObjAsPackStr(that), {
+        expires : { 
+          ms : that.getmsRemaining() 
+        }
+      });      
+      
+      return that;
+    },    
+
+    getNewFromCookieNamed : function (that, cookiename) {
+      var cookieval = juicycookie.getValue(cookiename),
+          opts;
 
       if (cookieval) {
-        pack = that.pack = cookiepack.getNew(that.name, cookieval);
-        if (pack.getmsRemaining() > 0) {
-          pack.activate(function (packer) {
-            that.onChangeHook.fire(packer);
-          });
-        }
+        opts = cookiepack.getPackStrAsObj(cookiename, cookieval);
+        that = this.getWithOpts(that, opts);
       }
+
       return that;
+    },
+
+    onChange : function (fn) {
+      this.onChangeHook.addFn(fn);
+      return this;
+    },
+
+    doChange : function (opts) {
+      this.onChangeHook.fire(opts);    
+    },
+
+    end : function () {
+      var that = this,
+          timer = that.timer;
+
+      juicycookie.rm(that.cookiename);
+      that = that.getWithOpts(that);
+
+      if (timer.st === 1) {
+        timer.ms = 0;
+        timer.reset();
+        timer.callStop();
+      }
+
+      return that;
+    },
+
+    start : function (ms) {
+      var that = this,
+          timer = that.timer;
+
+      if (ms > 0 && timer.st !== 1) {
+        timer.ms = ms;
+        timer.reset();
+        timer.start();
+      }
+
+      return that;
+    },
+
+    setSeed : function (valStr) {
+      var that = this,
+          opts;
+
+      that = that.getNewFromCookieNamed(that, that.cookiename);
+      opts = cookiepack.getPackStrAsObj(that.cookiename, valStr);
+      that = that.getWithOpts(that, opts);
+
+      return that.persist();
+    },
+
+    // valStr ex, '3kj409234|60000'
+    refresh : function (valStr) {
+      var that = this;
+
+      that = that.setSeed(valStr);
+      that.start(that.getmsRemaining());
+      return that;
+    },
+
+    connect : function () {
+      var that = this;
+
+      if (that.getmsRemaining() > 0) {
+        that.start(that.getmsRemaining());
+      }
+
+      return that;
+    },
+
+    forEach : function (timeObj, fn) {
+      this.timer.forEach(timeObj, fn);
+      return this;
+    },
+
+    onStop : function (fn) {
+      this.timer.onStop(fn);
+      return this;
+    },
+
+    onStart : function (fn) {
+      this.timer.onStart(fn);
+      return this;
     }
   };
 
-  return {
-    proto : proto,
-    getNew : function (spec) {
-      var that = Object.create(this.proto);
-      that.cookie = spec.cookie;
-      // consider bgn and end hook?
-      that.onChangeHook = eventhook.getNew();
-      that.name = spec.cookie.name;
-      that.timer = null;
+  p = function (name) {
+    var that_proto = Object.create(proto),
+        that;
 
-      return that;
-    }
+    that_proto.timer = rocktimer();
+    that_proto.cookiename = name || null;
+    that_proto.onChangeHook = eventhook.getNew();
+
+    // cookie properties at top level
+    that = Object.create(that_proto);
+    that = that.getNewFromCookieNamed(that, that.cookiename);
+
+    return that;
   };
+
+  p.proto = proto;
+
+  return p;
 
 }());

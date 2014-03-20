@@ -22,6 +22,7 @@ startUtils.createFileIfNotExist({
     inputPath : [
       "./test/testSrc/",
       "./node_modules",
+      "./lib",
       "./sessionbrowser.js"
     ],
     outputPath : "./test/testFin/"
