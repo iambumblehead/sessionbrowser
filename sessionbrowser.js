@@ -1,9 +1,9 @@
 // Filename: sessionbrowser.js
-// Timestamp: 2015.12.20-00:45:30 (last modified)
+// Timestamp: 2015.12.20-00:57:17 (last modified)
 // Author(s): Bumblehead (www.bumblehead.com)
 
 var cookiepack = require('./lib/cookiepack'),
-    juicycookie = require('juicycookie'),
+    juicycookie = require('juicy-cookie'),
     rocktimer = require('rocktimer'),
     eventhook = require('eventhook');
 
