@@ -1,18 +1,13 @@
 // Filename: sessionbrowser.js
-// Timestamp: 2014.03.19-18:25:57 (last modified)  
+// Timestamp: 2015.12.20-00:45:30 (last modified)
 // Author(s): Bumblehead (www.bumblehead.com)
-// Requires:
-// juicycookie.js, 
-// eventhook.js, 
-// rocktimer.js,
-// cookiepack.js
 
-var cookiepack = require('./lib/cookiepack');
-var juicycookie = require('juicycookie');
-var rocktimer = require('rocktimer');
-var eventhook = require('eventhook');
+var cookiepack = require('./lib/cookiepack'),
+    juicycookie = require('juicycookie'),
+    rocktimer = require('rocktimer'),
+    eventhook = require('eventhook');
 
-var sessionbrowser = ((typeof module === 'object') ? module : {}).exports = (function (p) {
+var sessionbrowser = module.exports = (function (p) {
 
   var proto = {
     timer : null,

@@ -1,6 +1,7 @@
 {
   "name": "sessionbrowser",
-  "version": "0.0.3",
+  "main": "sessionbrowser",
+  "version": "0.0.4",
   "license" : "MIT",
   "repository": {
     "type": "git",
@@ -14,9 +15,9 @@
     "update"
   ],
   "dependencies": {
-    "juicy-cookie" : ">=0.0.0",
+    "juicy-cookie" : "~0.0.x",
     "rocktimer" : "~0.2.x",
-    "eventhook": ">=0.0.0"
+    "eventhook": "~0.0.x"
   },
   "devDependencies": {
     "scroungejs": ">=0.0.3",
