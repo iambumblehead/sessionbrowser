@@ -1,5 +1,5 @@
 // Filename: sessionbrowser.js
-// Timestamp: 2015.12.20-00:57:17 (last modified)
+// Timestamp: 2015.12.20-01:17:19 (last modified)
 // Author(s): Bumblehead (www.bumblehead.com)
 
 var cookiepack = require('./lib/cookiepack'),
@@ -161,7 +161,7 @@ var sessionbrowser = module.exports = (function (p) {
 
     that_proto.timer = rocktimer();
     that_proto.cookiename = name || null;
-    that_proto.onChangeHook = eventhook.getNew();
+    that_proto.onChangeHook = eventhook();
 
     // cookie properties at top level
     that = Object.create(that_proto);
